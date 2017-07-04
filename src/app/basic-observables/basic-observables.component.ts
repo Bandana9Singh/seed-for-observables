@@ -1,3 +1,4 @@
+//stripped down versio of Observables is rxjs/Observable
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Http, Response, RequestOptions } from '@angular/http';
@@ -34,21 +35,23 @@ export class BasicObservablesComponent implements OnInit {
   					.map((e:any) => e.target.value)
   					.filter(text => text.length>=3)
   					.debounceTime(400)
-  					.distinctUntilChanged()
-  					.map(searchTerm => {
+  					.distinctUntilChanged();
+  					/*.map(searchTerm => {
   						var url = "https://api.spotify.com/v1/search?type=artist&q=" + searchTerm;
   						let jqueryXhr: JQueryXHR = $.getJSON(urlString);
                     	let promise: Promise<any> = Promise.resolve(jqueryXhr);
                     	let observable = Observable.fromPromise(promise);
 
   						return observable;
-  					});
+  					});*/
 
   		/* Traditional way 
   		keyups.subscribe(function(data){
   			console.log(data);
   		}); or using fat-arrow */
 
-  		keyups.subscribe(data=>console.log(data));
+  		//subscribe method returns object, which we can unsubscribe, if we are no longer //interested in this observable stream.
+  		var subscription = keyups.subscribe(data=>console.log(data));
+  		subscription.unsubscribe();
   	} 			
 }
